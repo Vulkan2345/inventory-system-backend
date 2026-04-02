@@ -1,6 +1,6 @@
 # Inventory System — Backend
 
-**Versión:** 1.0.0-SNAPSHOT  
+**Versión:** 1.1.0-SNAPSHOT  
 **Última modificación:** 2 de abril de 2025  
 **Estado:** En desarrollo
 
@@ -8,36 +8,57 @@
 
 ## Descripción
 
-Backend para un sistema de gestión de inventario, desarrollado con **Spring Boot**. Expone una API RESTful para el control y seguimiento de productos, diseñada con principios de escalabilidad y seguridad.
+Backend para un sistema de gestión de inventario desarrollado con **Spring Boot**. Expone una API RESTful para el control y seguimiento de productos, con arquitectura en capas y datos simulados en memoria.
 
 ---
 
 ## Tecnologías
 
-| Tecnología     | Versión     |
-|----------------|-------------|
-| Java           | 17+         |
-| Spring Boot    | 3.x         |
-| Maven          | 3.8+        |
-| Base de datos  | MySQL *(próximamente)* |
+| Tecnología  | Versión |
+|-------------|---------|
+| Java        | 17+     |
+| Spring Boot | 3.x     |
+| Maven       | 3.8+    |
 
 ---
 
-## Estructura del proyecto
+## Arquitectura
 
 ```
 inventory-system/
-├── src/
-│   ├── main/
-│   │   ├── java/com/santiago/inventory_system/
-│   │   │   └── InventorySystemApplication.java
-│   │   └── resources/
-│   │       └── application.properties
-│   └── test/
-│       └── java/com/santiago/inventory_system/
-│           └── InventorySystemApplicationTests.java
-├── pom.xml
-└── README.md
+├── src/main/java/com/santiago/inventory_system/
+│   ├── controller/
+│   │   └── ProductController.java      # Endpoints REST
+│   ├── service/
+│   │   └── ProductService.java         # Lógica de negocio
+│   ├── model/
+│   │   └── Product.java                # Entidad producto
+│   └── InventorySystemApplication.java
+└── pom.xml
+```
+
+---
+
+## API REST — Productos
+
+Base URL: `http://localhost:8080/api/products`
+
+| Método     | Endpoint               | Descripción                 |
+|------------|------------------------|-----------------------------|
+| `GET`      | `/api/products`        | Listar todos los productos  |
+| `GET`      | `/api/products/{id}`   | Obtener producto por ID     |
+| `POST`     | `/api/products`        | Crear nuevo producto        |
+| `PUT`      | `/api/products/{id}`   | Actualizar producto por ID  |
+| `DELETE`   | `/api/products/{id}`   | Eliminar producto por ID    |
+
+### Ejemplo de cuerpo (POST / PUT)
+
+```json
+{
+  "name": "Laptop",
+  "price": 1200.00,
+  "quantity": 10
+}
 ```
 
 ---
@@ -51,28 +72,20 @@ inventory-system/
 git clone https://github.com/Vulkan2345/inventory-system-backend.git
 cd inventory-system-backend
 
-# Compilar el proyecto
-mvn clean install
-
 # Ejecutar la aplicación
-mvn spring-boot:run
+./mvnw spring-boot:run
 ```
 
 La aplicación quedará disponible en: `http://localhost:8080`
 
 ---
 
-## Funcionalidades actuales
-
-- Configuración inicial del proyecto con Spring Boot
-- Servidor en ejecución en el puerto `8080`
-
----
-
 ## Roadmap
 
-- [ ] API REST para gestión de productos (CRUD)
-- [ ] Integración con base de datos MySQL
+- [x] Configuración inicial del proyecto
+- [x] API REST — CRUD de productos
+- [x] Arquitectura en capas (Controller / Service / Model)
+- [ ] Conexión a base de datos MySQL
 - [ ] Autenticación y autorización con JWT
 - [ ] Documentación de endpoints con Swagger / OpenAPI
 
