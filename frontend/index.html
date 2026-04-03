@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Inventory System</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0f172a;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #38bdf8;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+
+        input {
+            padding: 10px;
+            margin: 5px;
+            border-radius: 8px;
+            border: none;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            background: #38bdf8;
+            color: black;
+            cursor: pointer;
+            margin: 5px;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #0ea5e9;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            background: #1e293b;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .delete-btn {
+            background: #ef4444;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background: #dc2626;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>📦 Inventory System</h1>
+
+        <button onclick="loadProducts()">Cargar Productos</button>
+
+        <h2>➕ Crear producto</h2>
+        <input type="text" id="name" placeholder="Nombre">
+        <input type="number" id="price" placeholder="Precio">
+        <button onclick="createProduct()">Crear</button>
+
+        <h2>🔍 Buscar</h2>
+        <input type="text" id="searchInput" placeholder="Buscar...">
+        <button onclick="searchProducts()">Buscar</button>
+
+        <ul id="productList"></ul>
+    </div>
+
+    <script>
+        const API_URL = "http://localhost:8080/api/products";
+
+        function loadProducts() {
+            fetch(API_URL)
+                .then(res => res.json())
+                .then(showProducts);
+        }
+
+        function showProducts(products) {
+            const list = document.getElementById("productList");
+            list.innerHTML = "";
+
+            products.forEach(p => {
+                const li = document.createElement("li");
+
+                li.innerHTML = `
+                ${p.name} - $${p.price}
+                <button class="delete-btn" onclick="deleteProduct(${p.id})">Eliminar</button>
+            `;
+
+                list.appendChild(li);
+            });
+        }
+
+        function searchProducts() {
+            const name = document.getElementById("searchInput").value;
+
+            fetch(API_URL + "/search?name=" + name)
+                .then(res => res.json())
+                .then(showProducts);
+        }
+
+        function createProduct() {
+            const name = document.getElementById("name").value;
+            const price = document.getElementById("price").value;
+
+            fetch(API_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ name, price })
+            })
+                .then(() => {
+                    loadProducts();
+                });
+        }
+
+        function deleteProduct(id) {
+            fetch(API_URL + "/" + id, {
+                method: "DELETE"
+            })
+                .then(() => {
+                    loadProducts();
+                });
+        }
+    </script>
+
+</body>
+
+</html>
