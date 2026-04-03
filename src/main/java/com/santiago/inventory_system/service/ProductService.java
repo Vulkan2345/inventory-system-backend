@@ -28,6 +28,13 @@ public class ProductService {
                 .orElse(null);
     }
 
+    // ✅ NUEVO: búsqueda
+    public List<Product> searchProducts(String name) {
+        return products.stream()
+                .filter(p -> p.getName().toLowerCase().contains(name.toLowerCase()))
+                .toList();
+    }
+
     public Product createProduct(Product product) {
         product.setId((long) (products.size() + 1));
         products.add(product);
@@ -45,8 +52,8 @@ public class ProductService {
         return null;
     }
 
-    public String deleteProduct(Long id) {
-        products.removeIf(p -> p.getId().equals(id));
-        return "Producto eliminado " + id;
+    // ✅ CAMBIO IMPORTANTE: ahora devuelve boolean
+    public boolean deleteProduct(Long id) {
+        return products.removeIf(p -> p.getId().equals(id));
     }
 }
