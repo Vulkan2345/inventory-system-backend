@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Inventory App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <h1>📦 Inventario</h1>
+
+    <!-- FORMULARIO -->
+    <div class="form">
+        <input type="text" id="name" placeholder="Nombre">
+        <input type="number" id="price" placeholder="Precio">
+        <button onclick="createProduct()">Agregar</button>
+    </div>
+
+    <!-- BUSCAR -->
+    <div class="search">
+        <input type="text" id="search" placeholder="Buscar producto">
+        <button onclick="searchProducts()">Buscar</button>
+        <button onclick="loadProducts()">Reset</button>
+    </div>
+
+    <!-- LISTA -->
+    <ul id="productList"></ul>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
